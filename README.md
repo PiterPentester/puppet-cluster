@@ -1,2 +1,2 @@
 # puppet-cluster
-Creating and bootstraping puppet cluster via Vagrant
+Creating and bootstrapping puppet cluster via Vagrant
