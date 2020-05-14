@@ -21,7 +21,8 @@ ntpdate 0.centos.pool.ntp.org
 systemctl enable ntpd
 
 # disable selinux
-sed -i 's/SELINUX=enabled/SELINUX=disabled/g' /etc/sysconfig/selinux
+sed -i 's/SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
+setenforce 0
 
 # install Java 1.8
 yum install -y java-1.8.0-openjdk wget

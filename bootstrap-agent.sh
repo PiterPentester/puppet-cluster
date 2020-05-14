@@ -27,7 +27,7 @@ yum install -y puppet-agent
 
 # configure AGENT
 echo "[main]
- certname = ${hostname_w}
+ certname = $(hostname)
  server = master.puppet.io
  environment = production
  runinterval = 10m" >> /etc/puppetlabs/puppet/puppet.conf
