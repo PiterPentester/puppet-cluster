@@ -85,3 +85,8 @@ echo "[master]
 
 # enable & start puppetserver
 systemctl enable puppetserver
+systemctl start puppetserver
+systemctl start puppet
+
+# download wget module
+/opt/puppetlabs/bin/puppet module install maestrodev-wget
