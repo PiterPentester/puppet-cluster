@@ -57,6 +57,11 @@ yum install -y java-1.8.0-openjdk wget
 # install server & puppetdb
 yum install -y puppetserver puppetdb puppetdb-termini
 
+# install puppet tools
+rpm -Uvh https://yum.puppet.com/puppet-tools-release-el-7.noarch.rpm
+
+yum install pdk -y
+
 # configure puppetdb
 sed -i 's|# subname = //localhost:5432/puppetdb|subname = //localhost:5432/puppetdb|g' /etc/puppetlabs/puppetdb/conf.d/database.ini
 

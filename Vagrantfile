@@ -10,7 +10,7 @@
 Vagrant.configure("2") do |config|
 
   #config.vm.provision :shell, path: "bootstrap.sh"
-
+  config.vm.synced_folder ".", "/mnt/host_machine"
   # Init & bootstrap MASTER for puppet
   config.vm.define :master do |master|
     master.vm.provider :virtualbox do |v|
