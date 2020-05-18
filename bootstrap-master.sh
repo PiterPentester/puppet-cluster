@@ -25,11 +25,9 @@ systemctl start postgresql-9.6.service
 
 # configure postgres9
 # sudo -i -u postgres sh
-sudo -i -u postgres bash -c "psql -c \"CREATE USER puppetdb WITH PASSWORD 'puppetdbPass';\"" createuser -DRSP puppetdb
-sudo -i -u postgres sh
-createdb -E UTF8 -O puppetdb puppetdb
-psql puppetdb -c 'create extension pg_trgm'
-exit
+sudo -i -u postgres bash -c "psql -c \"CREATE USER puppetdb WITH PASSWORD 'puppetdbPass';\""
+sudo -i -u postgres bash -c "psql -c \"CREATE DATABASE puppetdb WITH OWNER=puppetdb ENCODING= 'UTF8';\""
+sudo -i -u postgres bash -c "psql -c 'create extension pg_trgm'"
 
 # change pg_hba
 sed -i 's|host    all             all             ::1/128                 ident|host    all             all             ::1/128                 md5|g' /var/lib/pgsql/9.6/data/pg_hba.conf
