@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 # Bootstraping puppet AGENT
 
+# configure hostnames
+
+if [ "$(hostname)" == "worker1" ]; then
+  echo "10.0.0.10    master.puppet.io puppet
+  10.0.0.12    worker2.puppet.io worker2" >> /etc/hosts
+  sed -i 's|^127.0.0.1|127.0.0.1   worker1.puppet.io|' /etc/hosts
+elif [ "$(hostname)" == "worker2" ]; then
+  echo "10.0.0.10    master.puppet.io puppet
+  10.0.0.11    worker1.puppet.io worker2" >> /etc/hosts
+  sed -i 's|^127.0.0.1|127.0.0.1   worker2.puppet.io|' /etc/hosts
+fi
+
 # add repo
 rpm -Uvh https://yum.puppet.com/puppet6-release-el-7.noarch.rpm
 
@@ -27,20 +39,10 @@ yum install -y puppet-agent
 
 # configure AGENT
 echo "[main]
- certname = $(hostname)
+ certname = $(hostname -f)
  server = master.puppet.io
  environment = production
  runinterval = 10m" >> /etc/puppetlabs/puppet/puppet.conf
-
-# configure hostnames
-
-if [ "$(hostname)" == "worker1" ]; then
-  echo "10.0.0.10    master.puppet.io puppet
-  10.0.0.12    worker2" >> /etc/hosts
-elif [ "$(hostname)" == "worker2" ]; then
-  echo "10.0.0.10    master.puppet.io puppet
-  10.0.0.11    worker1" >> /etc/hosts
-fi
 
 # run AGENT
 /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
