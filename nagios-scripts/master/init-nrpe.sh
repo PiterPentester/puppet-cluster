@@ -17,6 +17,6 @@ make install
 make install-xinetd
 make install-daemon-config
 
-sed -i 's/only_from       = 127.0.0.1 ::1/only_from       = 127.0.0.1 ::1 10.0.0.10/g' /etc/xinetd.d/nrpe
+sed -i 's/only_from       = 127.0.0.1 ::1/only_from       = 127.0.0.1 ::1 10.0.0.10/g' /etc/xinetd.d/nrpe.cfg
 
 sudo service xinetd restart
