@@ -2,8 +2,10 @@
 # Bootstraping puppet MASTER
 
 # configure hosts
-echo "10.0.0.11    worker1
-10.0.0.12    worker2" >> /etc/hosts
+echo "10.0.0.11  worker1.puppet.io  worker1
+10.0.0.12  worker2.puppet.io  worker2" >> /etc/hosts
+
+sed -i 's|^127.0.0.1|127.0.0.1   master.puppet.io|' /etc/hosts
 
 # add repo
 rpm -Uvh https://yum.puppet.com/puppet6-release-el-7.noarch.rpm
@@ -14,7 +16,7 @@ yum -y update
 # install postgres9.6
 yum install https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm -y
 
-yum install postgresql96 postgresql96-server postgresql96-contrib postgresql96-libs -y
+yum install postgresql96 postgresql96-server postgresql96-contrib postgresql96-libs git -y
 
 # init DB
 /usr/pgsql-9.6/bin/postgresql96-setup initdb
@@ -73,13 +75,13 @@ sed -i 's|# gc-interval = 60|gc-interval = 20|g' /etc/puppetlabs/puppetdb/conf.d
 sed -i 's/JAVA_ARGS="-Xms2g -Xmx2g -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger"/JAVA_ARGS="-Xms1g -Xmx1g -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger"/g' /etc/sysconfig/puppetserver
 
 echo "[master]
- dns_alt_names=master.puppet.io,puppet
+dns_alt_names=master.puppet.io,puppet
 
- [main]
- certname = master.puppet.io
- server = master.puppet.io
- environment = production
- runinterval = 10m" >> /etc/puppetlabs/puppet/puppet.conf
+[main]
+certname = master.puppet.io
+server = master.puppet.io
+environment = production
+runinterval = 10m" >> /etc/puppetlabs/puppet/puppet.conf
 
 # enable & start puppetserver
 systemctl enable puppetserver
